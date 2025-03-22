@@ -1,20 +1,18 @@
 {
   "rewrites": [
-    { "source": "/", "destination": "/login" }
-  ],
-  "redirects": [
-    { "source": "/home", "destination": "/login", "statusCode": 301 }
-  ],
-  "routes": [
-    { "src": "/(.*)", "dest": "/index.html" }
-  ],
-  "cleanUrls": true,
-  "headers": [
+    {
+      "source": "/api/:path*", 
+      "destination": "https://server-dj-vue.vercel.app/api/:path"
+    },
     {
       "source": "/(.*)",
-      "headers": [
-        { "key": "Cache-Control", "value": "max-age=0, must-revalidate" }
-      ]
+      "destination": "/index.html"
     }
+    
+  ],
+  
+  "redirects": [
+    { "source": "/", "destination": "/login" }
   ]
+
 }

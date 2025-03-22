@@ -13,7 +13,8 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      '/api': 'http://localhost:4000', // Sesuaikan dengan backend
+      '/api': 'https://server-noteku.vercel.app/',
+     changeOrigiin: true, // Sesuaikan dengan backend
     },
   },
 
