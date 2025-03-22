@@ -1,5 +1,6 @@
-import axios from 'axios';
-import { useAuthStore } from '@/stores/auth';
+import axios from "axios";
+import { useAuthStore } from "@/stores/auth";
+
 const API = import.meta.env.VITE_API_BASE;
 const axiosInstance = axios.create({
   baseURL: `${API}api/v1`,
@@ -10,16 +11,25 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
+    const authStore = useAuthStore();
+
     if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true; // Tandai agar tidak loop
-      const authStore = useAuthStore();
+      console.warn("Access token expired, mencoba refresh token...");
+      originalRequest._retry = true; // Supaya tidak infinite loop
 
       try {
-        await authStore.refreshToken(); // Perbarui accessToken di cookie
-        return axiosInstance(originalRequest); // Ulangi request asli
+        const refreshResponse = await authStore.refreshToken(); // Coba refresh token
+
+        if (refreshResponse) {
+          console.log("Refresh token berhasil, ulangi request...");
+          return axiosInstance(originalRequest);
+        } else {
+          throw new Error("Refresh token gagal");
+        }
       } catch (refreshError) {
-        authStore.logout(); // Logout jika refresh gagal
-        window.location.href = '/login'; // Redirect ke login
+        console.error("Refresh token gagal, user akan logout:", refreshError);
+        authStore.logout();
+        window.location.href = "/login";
         return Promise.reject(refreshError);
       }
     }
