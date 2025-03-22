@@ -41,7 +41,7 @@ export const useAuthStore = defineStore('auth', {
     this.error = null;
 
     console.log("Mencoba refresh token...");
-    const response = await axios.post(`${API}auth/refresh`, {});
+    const response = await axiosInstance.post(`/auth/refresh`, {});
 
     console.log("Token berhasil diperbarui:", response.data);
 
