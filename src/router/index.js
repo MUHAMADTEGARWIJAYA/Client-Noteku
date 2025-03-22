@@ -21,26 +21,21 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore();
 
-
   if (to.meta.requiresAuth) {
     if (!authStore.isAuthenticated) {
-      try {
-        await authStore.checkAuth();
-        if (authStore.isAuthenticated) {
-          next();
-        } else {
-          next('/login');
-        }
-      } catch (error) {
-        console.error('Gagal memverifikasi autentikasi:', error);
-        next('/login');
+      console.log("User tidak terautentikasi, memeriksa token...");
+
+      await authStore.checkAuth();
+
+      if (!authStore.isAuthenticated) {
+        console.log("Autentikasi gagal, mengarahkan ke login...");
+        return next("/login");
       }
-    } else {
-      next();
     }
-  } else {
-    next();
   }
+
+  next();
 });
+
 
 export default router;

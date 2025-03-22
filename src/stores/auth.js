@@ -41,7 +41,7 @@ export const useAuthStore = defineStore('auth', {
     this.error = null;
 
     console.log("Mencoba refresh token...");
-    const response = await axiosInstance.post('/auth/refresh', {});
+    const response = await axios.post(`${API}auth/refresh`, {});
 
     console.log("Token berhasil diperbarui:", response.data);
 
@@ -95,23 +95,40 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    async checkAuth() {
-      try {
-        this.loading = true;
-        const response = await axiosInstance.get(
-          '/auth/name',
-          { withCredentials: true }
-        );
+async checkAuth() {
+  try {
+    this.loading = true;
 
-        this.user = { name: response.data.name };
-        this.isAuthenticated = true;
-      } catch (error) {
-        this.user = null;
-        this.isAuthenticated = false;
-        console.error('Cek autentikasi gagal:', error.response?.data?.message || error);
-      } finally {
-        this.loading = false;
-      }
-    },
+    // Coba ambil data user
+    const response = await axiosInstance.get('/auth/name', {
+      withCredentials: true
+    });
+
+    this.user = { name: response.data.name };
+    this.isAuthenticated = true;
+  } catch (error) {
+    console.warn("Token mungkin expired, mencoba refresh token...");
+
+    try {
+      // Coba refresh token jika permintaan sebelumnya gagal
+      await axiosInstance.post('/auth/refresh', {}, { withCredentials: true });
+
+      // Jika berhasil refresh, coba ulangi permintaan autentikasi
+      const retryResponse = await axiosInstance.get('/auth/name', {
+        withCredentials: true
+      });
+
+      this.user = { name: retryResponse.data.name };
+      this.isAuthenticated = true;
+    } catch (refreshError) {
+      console.error("Refresh token gagal, user akan logout:", refreshError.response?.data?.message || refreshError);
+      this.user = null;
+      this.isAuthenticated = false;
+    }
+  } finally {
+    this.loading = false;
+  }
+}
+
   },
 });
