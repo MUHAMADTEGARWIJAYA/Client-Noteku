@@ -9,7 +9,7 @@
       <h2 class="text-white font-bold text-lg mt-8">Login</h2>
       <p class="text-zinc-400 text-sm mt-0.5">Belum punya akun?
         <router-link to="/register">
-          <span class="font-bold text-primary underline">Log in</span>
+          <span class="font-bold text-primary underline">Singup</span>
         </router-link>
       </p>
       <form @submit.prevent="handleLogin" class="mt-16">

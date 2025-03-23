@@ -60,7 +60,7 @@
 
 
         <NoteDetail v-else-if="selectedNote" :note="selectedNote" @update="handleUpdateNote" />
-        <p v-else class="text-center text-white mt-10">NotesKu adalah aplikasi catatan sederhana jadi mari buat catatan
+        <p v-else class="text-center text-white mt-10">NoteKu adalah aplikasi catatan sederhana jadi mari buat catatan
         </p>
       </div>
     </div>
