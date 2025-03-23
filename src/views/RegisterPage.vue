@@ -79,7 +79,7 @@ const rules = computed(() => ({
   username: {
     required,
     $message: "Please enter your name",
-    maxLength: maxLength(10),
+    maxLength: maxLength(30),
     $message: "Name must be at most 10 characters long"
   },
   email: {
