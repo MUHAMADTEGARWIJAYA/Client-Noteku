@@ -23,7 +23,13 @@
           </div>
         </div>
         <div>
-          <label for="password" class="block text-zinc-400 text-sm border-[#3F3F46] mt-10">Password</label>
+          <div class="flex items-end  justify-between">
+            <label for="password" class="block text-zinc-400 text-sm border-[#3F3F46] mt-10">Password</label>
+            <router-link to="/forgot-password" class="text-zinc-400 hover:text-primary mb-0.1  text-sm "> Lupa
+              Password?</router-link>
+
+          </div>
+
           <input v-model="password" type="password" placeholder="Password"
             class="block w-full bg-[#27272A] border border-[#3F3F46] rounded text-white px-2 py-1 placeholder:text-zinc-600 text-sm"
             :class="{ 'border-red-500': v$.password.$error }" />

@@ -24,7 +24,7 @@
       <input v-model="title" placeholder="Judul"
         class="w-full p-3 mb-4 text-lg font-semibold text-gray-200 bg-secondary rounded-lg border-none focus:outline-none placeholder-gray-500" />
 
-      <div class="flex flex-grow rounded-lg overflow-hidden">
+      <div class="flex flex-grow rounded-lg  overflow-hidden">
         <div ref="lineNumbers"
           class="w-12 p-3 text-right text-gray-500 bg-secondary font-mono select-none overflow-hidden scrollbar-hidden"
           style="line-height: 1.5;">
@@ -49,6 +49,7 @@ import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import { useNotifyStore } from '@/stores/Notify';
 import SaveIcon from '@/components/icons/SaveIcon.vue';
 import Swal from 'sweetalert2';
+import { nextTick } from 'vue';
 
 // Inisialisasi Route & Router
 const route = useRoute();
@@ -67,6 +68,10 @@ watchEffect(() => {
   if (noteData.value) {
     title.value = noteData.value.title;
     content.value = noteData.value.content;
+
+    nextTick(() => {
+      updateLineNumbers(); // 🔥 Pastikan dipanggil setelah render selesai
+    });
   }
 });
 

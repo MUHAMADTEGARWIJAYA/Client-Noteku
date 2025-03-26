@@ -32,24 +32,13 @@
           <label class="mt-0.5 block text-sm text-zinc-400" for="password">Password</label>
           <input v-model="password"
             class="block w-full bg-[#27272A] border border-[#3F3F46] rounded text-white px-2 py-1 placeholder:text-zinc-600 text-sm"
-            type="password" placeholder="*************" required :class="{ 'border-red-500': v$.password.$error }">
+            type="password" placeholder="Min 6 karakter" required :class="{ 'border-red-500': v$.password.$error }">
           <div class="text-red-500 text-xs mt-1" v-if="v$.password.$error">
             {{ v$.password.$errors[0].message }}
           </div>
         </div>
         <div>
-          <div class="flex gap-4 mt-5">
-            <label class="flex items-center text-white " for="role ">
-              <input type="radio" v-model="role" value="male" class="mr-2" />
-              Male
-            </label>
-
-            <label class="flex items-center text-white" for="role">
-              <input type="radio" v-model="role" value="female" class="mr-2 " />
-              Female
-            </label>
-          </div>
-          <p class="text-gray-300 mt-2">Selected: {{ role }}</p>
+          <GenderInput v-model="role" />
         </div>
         <button
           class="mt-10 w-full bg-primary text-white font-bold py-2 px-4 rounded-full hover:bg-opacity-80 transition"
@@ -78,6 +67,7 @@ import PenIcon from '@/components/icons/PenIcon.vue';
 import WelcomeCustom from '@/components/shared/WelcomeCustom.vue';
 import { ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
+import GenderInput from '@/ui/GenderInput.vue';
 import { useRouter } from 'vue-router';
 import { useNotifyStore } from '@/stores/Notify';
 const router = useRouter()
