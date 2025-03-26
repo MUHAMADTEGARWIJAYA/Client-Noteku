@@ -37,6 +37,20 @@
             {{ v$.password.$errors[0].message }}
           </div>
         </div>
+        <div>
+          <div class="flex gap-4 mt-5">
+            <label class="flex items-center text-white " for="role ">
+              <input type="radio" v-model="role" value="male" class="mr-2" />
+              Male
+            </label>
+
+            <label class="flex items-center text-white" for="role">
+              <input type="radio" v-model="role" value="female" class="mr-2 " />
+              Female
+            </label>
+          </div>
+          <p class="text-gray-300 mt-2">Selected: {{ role }}</p>
+        </div>
         <button
           class="mt-10 w-full bg-primary text-white font-bold py-2 px-4 rounded-full hover:bg-opacity-80 transition"
           type="submit" :disabled="loading || v$.$invalid"
@@ -69,6 +83,7 @@ import { useNotifyStore } from '@/stores/Notify';
 const router = useRouter()
 const authStore = useAuthStore()
 const username = ref('');
+const role = ref('');
 const email = ref('');
 const RegisterErr = ref(false)
 const password = ref('');
@@ -114,7 +129,7 @@ const handleSignup = async () => {
     if (!result) return;
 
 
-    await authStore.register(username.value, email.value, password.value);
+    await authStore.register(username.value, email.value, password.value, role.value);
 
 
     showSuccess();

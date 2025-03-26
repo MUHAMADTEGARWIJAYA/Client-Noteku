@@ -3,6 +3,7 @@ import axiosInstance from "@/utils/axiosInstance";
 import axios from "axios";
 
 const API = import.meta.env.VITE_API_BASE;
+const LOCAL = 'http://localhost:4000/';
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -47,6 +48,9 @@ export const useAuthStore = defineStore("auth", {
         this.error = null;
 
         const response = await axios.post(`${API}auth/refresh`, {}, { withCredentials: true });
+        // Development mode
+        // const response = await axios.post(`${LOCAL}auth/refresh`, {}, { withCredentials: true });
+
 
         // Simpan access token baru di localStorage
         localStorage.setItem("accessToken", response.data.accessToken);
@@ -83,12 +87,13 @@ export const useAuthStore = defineStore("auth", {
       }
     },
 
-    async register(username, email, password) {
+    async register(username, email, password, role) {
       try {
         const response = await axiosInstance.post("/auth/register", {
           username,
           email,
           password,
+          role,
         });
 
         console.log("Register sukses:", response.data);

@@ -2,9 +2,11 @@ import axios from 'axios';
 import { useAuthStore } from '@/stores/auth';
 
 const API = import.meta.env.VITE_API_BASE;
-
+const LOCAL = 'http://localhost:4000/';
 const axiosInstance = axios.create({
   baseURL: `${API}api/v1`,
+  // Development mode
+  //  baseURL: `${LOCAL}api/v1`,
   withCredentials: true, // Kirim cookies untuk refresh token
 });
 

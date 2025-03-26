@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row w-full min-h-screen bg-secondary">
+  <div class="flex flex-row xl:w-96 min-h-screen bg-secondary">
     <!-- Hamburger Menu Button (Mobile Only) -->
     <button @click="toggleSidebar" class="fixed top-4 left-4 z-50 p-2 bg-gray-100 rounded-lg lg:hidden">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -10,9 +10,24 @@
     <!-- Sidebar -->
     <div
       :class="['flex bg-secondary flex-col justify-between border-white border-r p-8 h-screen w-96 fixed transform transition-transform duration-300 ease-in-out', isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0']">
-      <h1 class="font-extrabold text-xl text-center text-white">
-        <span class="font-extrabold text-xl text-center text-primary">Halo</span> {{ data?.name }}
-      </h1>
+      <router-link :to='`/home/create`'>
+        <button
+          class="flex justify-center items-center text-center h-10 w-10 bg-gray-100 hover:bg-gray-400 text-white rounded">
+          <AddIcon />
+        </button>
+      </router-link>
+
+      <div class="w-full h-14 gap-4 flex justify-start rounded-xl p-3 items-center">
+        <img :src="data?.role === 'male' ? '/avatar-cowo.svg' : '/avatar-cewe.svg'" alt="User Avatar"
+          class="w-10 h-10 object-cover bg-white rounded-full" />
+
+        <h1 class="font-extrabold text-xl text-center text-white">
+          <span class="font-extrabold text-xl text-center text-primary">Halo</span> {{ data?.name }}
+        </h1>
+      </div>
+
+
+
 
       <div class="flex flex-col gap-2 h-96 overflow-y-auto scrollbar-hidden">
         <div v-if="isLoading">
@@ -20,20 +35,22 @@
         </div>
         <div v-else-if="error">Error: {{ error.message }}</div>
         <div v-else-if="sortedNotes.length" class="flex flex-col gap-4">
-          <div v-for="note in sortedNotes" :key="note._id" @click="selectNote(note)"
-            class="cursor-pointer w-72 h-24 bg-primary rounded-lg px-2 py-1 flex flex-col justify-around shadow-md">
-            <p class="text-lg text-white font-bold font-sans">{{ note.title }}</p>
-            <p class="text-white text-sm line-clamp-1">{{ note.content }}</p>
-            <div class="flex justify-between">
-              <p class="text-[10px] text-white">Tanggal: {{ formatDate(note.createdAt) }}</p>
-              <p class="text-[10px] text-white">Diedit: {{ formatDate(note.updatedAt) }}</p>
+          <div v-for="note in sortedNotes" :key="note._id" @click="selectNote(note)">
+            <router-link v-if="note._id" :to="`/home/detail/${note._id}`"
+              class=" cursor-pointer w-72 h-24 bg-primary rounded-lg px-2  flex flex-col justify-around shadow-md">
+              <p class="text-lg text-white font-bold font-sans">{{ note.title }}</p>
+              <p class="text-white text-md line-clamp-1">{{ note.content }}</p>
+              <div class="flex justify-between ">
+                <p class="text-[8px] text-white">Tanggal: {{ formatDate(note.createdAt) }}</p>
+                <p class="text-[8px] text-white">Diedit: {{ formatDate(note.updatedAt) }}</p>
 
-              <div class="text-sm flex gap-2">
-                <button class="bg-slate-200 p-2 rounded-xl hover:bg-slate-400 transition-colors ease-in-out">
-                  <EditIcon />
-                </button>
+                <div class="text-sm flex gap-2">
+                  <button class="bg-slate-200 p-2 rounded-xl hover:bg-slate-400 transition-colors ease-in-out">
+                    <EditIcon />
+                  </button>
+                </div>
               </div>
-            </div>
+            </router-link>
           </div>
         </div>
         <div v-else class="flex justify-center items-center flex-col">
@@ -45,14 +62,12 @@
       <button @click="handleLogout" class="bg-primary text-white rounded-xl py-2 px-2 hover:bg-opacity-60">
         Logout
       </button>
+
     </div>
 
-
+    <!--
     <div class="lg:ml-96 w-full xl:p-10 p-5 mt-20 h-screen overflow-y-auto">
-      <button @click="showCreateForm = true"
-        class="flex justify-center items-center text-center h-10 w-10 bg-gray-100 hover:bg-gray-400 text-white rounded">
-        <AddIcon />
-      </button>
+
 
       <div class="w-full h-min-screen flex flex-col">
 
@@ -63,7 +78,7 @@
         <p v-else class="text-center text-white mt-10">NoteKu adalah aplikasi catatan sederhana jadi mari buat catatan
         </p>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -75,8 +90,8 @@ import EditIcon from '@/components/icons/EditIcon.vue';
 import { useAuthStore } from '@/stores/auth';
 import { useRouter } from 'vue-router';
 import { useName } from '@/composables/useNotes';
-import NoteDetail from '@/views/NoteDetail.vue';
-import CreateNote from '@/views/CreateNote.vue';
+// import NoteDetail from '@/views/NoteDetail.vue';
+// import CreateNote from '@/views/CreateNote.vue';
 import AddIcon from '@/components/icons/AddIcon.vue';
 import NotFoundIcon from '@/components/icons/NotFoundIcon.vue';
 
@@ -85,7 +100,7 @@ import NotFoundIcon from '@/components/icons/NotFoundIcon.vue';
 const queryClient = useQueryClient();
 const router = useRouter();
 const authStore = useAuthStore();
-const { data: notes, isLoading, error, refreshNotes } = useNotes();
+const { data: notes, isLoading, error, } = useNotes();
 const { data } = useName();
 const selectedNote = ref(null);
 const showCreateForm = ref(false);
@@ -124,11 +139,11 @@ const selectNote = (note) => {
   isSidebarOpen.value = false; // Tutup sidebar saat memilih catatan di mobile
 };
 
-const handleUpdateNote = async (updatedNote) => {
-  updatedNote.updatedAt = new Date().toISOString();
-  selectedNote.value = { ...updatedNote };
-  await refreshNotes();
-};
+// const handleUpdateNote = async (updatedNote) => {
+//   updatedNote.updatedAt = new Date().toISOString();
+//   selectedNote.value = { ...updatedNote };
+//   await refreshNotes();
+// };
 
 const handleLogout = async () => {
   try {

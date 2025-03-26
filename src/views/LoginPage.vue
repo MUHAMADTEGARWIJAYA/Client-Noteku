@@ -93,7 +93,7 @@ const handleLogin = async () => {
     if (!authStore.error) {
       showSuccess();
       setTimeout(() => {
-        router.push("/");
+        router.push("/home");
       }, 5000);
     } else {
       loginError.value = true;
