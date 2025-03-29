@@ -145,7 +145,7 @@ const createGroup = async () => {
 
 <style scoped>
 .group-management-container {
-  @apply bg-secondary rounded-xl p-4 shadow-lg;
+  @apply bg-secondary rounded-xl p-4;
 }
 
 .group-header {
