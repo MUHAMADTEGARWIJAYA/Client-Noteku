@@ -11,7 +11,7 @@ const route = useRoute();
 const groupId = ref(route.params.id);
 const notes = ref([]);
 const selectedNote = ref(null);
-const socket = io('https://server-noteku.vercel.app/', {
+const socket = io('server-noteku-production.up.railway.app/', {
   withCredentials: true,
 
   transports: ['websocket', 'polling'],

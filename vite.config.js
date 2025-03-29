@@ -13,7 +13,8 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      '/api': 'https://server-noteku.vercel.app/',
+      // '/api': 'https://server-noteku.vercel.app/',
+      '/api': 'https://server-noteku-production.up.railway.app/',
       // '/api': 'http://localhost:4000/',
     },
   },

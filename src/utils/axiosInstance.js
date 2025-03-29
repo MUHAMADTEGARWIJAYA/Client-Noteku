@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { useAuthStore } from '@/stores/auth'
 
-const API = import.meta.env.VITE_API_BASE
+// const API = import.meta.env.VITE_API_BASE
+const API = 'server-noteku-production.up.railway.app/'
 const LOCAL = 'http://localhost:4000/'
 const axiosInstance = axios.create({
   baseURL: `${API}api/v1`,
