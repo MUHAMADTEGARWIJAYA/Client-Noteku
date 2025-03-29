@@ -26,7 +26,7 @@ const routes = [
   },
   { path: '/login', component: () => import('@/views/LoginPage.vue') },
   { path: '/register', component: () => import('@/views/RegisterPage.vue') },
-  { path: '/test/:id', component: () => import('@/utils/TestSoket.vue') },
+  // { path: '/test/:id', component: () => import('@/utils/TestSoket.vue') },
 
   // { path: '/detail/:id', component: () => import('@/views/NoteDetail.vue'), meta: { requiresAuth: true } },
   // {

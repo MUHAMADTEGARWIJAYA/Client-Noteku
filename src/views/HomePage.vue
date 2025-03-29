@@ -72,7 +72,7 @@
       </div>
       <div class="border border-white w-full"></div>
 
-      <CreateGrup />
+      <!-- <CreateGrup /> -->
 
 
       <!-- <NavbarUtama /> -->
@@ -103,7 +103,7 @@
 </template>
 
 <script setup>
-import CreateGrup from '@/components/Create/CreateGrup.vue';
+// import CreateGrup from '@/components/Create/CreateGrup.vue';
 // import NavbarUtama from '@/components/Navbar/NavbarUtama.vue';
 import { useQueryClient } from '@tanstack/vue-query';
 
