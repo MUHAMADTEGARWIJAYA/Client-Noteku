@@ -14,7 +14,7 @@ const selectedNote = ref(null);
 const socket = io('https://server-noteku.vercel.app/', {
   withCredentials: true,
 
-  transports: ['polling'],
+  transports: ['websocket', 'polling'],
 });
 
 // Add User Dialog State
