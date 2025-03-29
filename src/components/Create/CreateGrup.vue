@@ -201,7 +201,7 @@ const createGroup = async () => {
 }
 
 .empty-action-button {
-  @apply mt-4 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-sm transition-colors;
+  @apply mt-4 px-4 py-2 bg-white hover:bg-black text-black hover:text-white rounded-lg text-sm transition-colors;
 }
 
 /* Modal styles */
@@ -210,7 +210,7 @@ const createGroup = async () => {
 }
 
 .modal-content {
-  @apply bg-secondary rounded-xl shadow-xl overflow-hidden w-full max-w-md;
+  @apply bg-secondary rounded-xl overflow-hidden w-full max-w-md;
 }
 
 .modal-header {
