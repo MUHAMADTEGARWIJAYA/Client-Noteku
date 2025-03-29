@@ -6,7 +6,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
-    optimizeDeps: {
+  optimizeDeps: {
     include: ['vue-sweetalert2'],
   },
   plugins: [vue(), vueDevTools()],
@@ -15,7 +15,6 @@ export default defineConfig({
     proxy: {
       '/api': 'https://server-noteku.vercel.app/',
       // '/api': 'http://localhost:4000/',
-
     },
   },
 

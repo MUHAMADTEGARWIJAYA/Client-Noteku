@@ -1,7 +1,8 @@
 <template>
   <div class="flex flex-row xl:w-96 min-h-screen bg-secondary">
     <!-- Hamburger Menu Button (Mobile Only) -->
-    <button @click="toggleSidebar" class="fixed top-4 left-4 z-50 p-2 bg-gray-100 rounded-lg lg:hidden">
+    <button @click="toggleSidebar"
+      :class="['fixed top-4 left-4 z-50 p-2 bg-gray-100 rounded-lg lg:hidden transform transition-transform duration-300 ease-in-out', isSidebarOpen ? 'translate-x-96' : '-translate-x-1 lg:translate-x-0']">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
       </svg>
@@ -9,27 +10,38 @@
 
     <!-- Sidebar -->
     <div
-      :class="['flex bg-secondary flex-col justify-between border-white border-r p-8 h-screen w-96 fixed transform transition-transform duration-300 ease-in-out', isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0']">
-      <router-link :to='`/home/create`'>
-        <button
-          class="flex justify-center items-center text-center h-10 w-10 bg-gray-100 hover:bg-gray-400 text-white rounded">
-          <AddIcon />
-        </button>
-      </router-link>
+      :class="['flex bg-secondary flex-col gap-4 border-white border-r p-8 min-h-screen overflow-y-auto w-96 fixed transform transition-transform duration-300 ease-in-out', isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0']">
 
-      <div class="w-full h-14 gap-4 flex justify-start rounded-xl p-3 items-center">
+
+      <div class="w-full h-14 gap-4 flex justify-start rounded-xl  items-center">
         <img :src="data?.role === 'male' ? '/avatar-cowo.svg' : '/avatar-cewe.svg'" alt="User Avatar"
           class="w-10 h-10 object-cover bg-white rounded-full" />
+        <div class="flex justify-between w-full items-center">
+          <div>
+            <p class="font-extrabold  text-center text-primary text-[10px]">Halo Good Day 👋🏻</p>
 
-        <h1 class="font-extrabold text-xl text-center text-white">
-          <span class="font-extrabold text-xl text-center text-primary">Halo</span> {{ data?.name }}
-        </h1>
+            <h1 class=" font-extrabold text-xl  text-white">
+              {{ data?.name }}
+            </h1>
+          </div>
+
+          <div>
+            <router-link :to='`/home/create`'>
+              <button
+                class="flex justify-center items-center text-center h-10 w-10 bg-gray-100 hover:bg-gray-400 text-white rounded">
+                <AddIcon />
+              </button>
+            </router-link>
+          </div>
+
+        </div>
+
+
       </div>
+      <div class="border border-white w-full"></div>
 
-
-
-
-      <div class="flex flex-col gap-2 h-96 overflow-y-auto scrollbar-hidden">
+      <div class="flex flex-col gap-2 h-72 overflow-y-auto scrollbar-hidden">
+        <p class="text-white text-[14px] ">Mynotes : </p>
         <div v-if="isLoading">
           Loading....
         </div>
@@ -58,8 +70,16 @@
           <NotFoundIcon />
         </div>
       </div>
+      <div class="border border-white w-full"></div>
 
-      <button @click="handleLogout" class="bg-primary text-white rounded-xl py-2 px-2 hover:bg-opacity-60">
+      <CreateGrup />
+
+
+      <!-- <NavbarUtama /> -->
+
+
+
+      <button @click="handleLogout" class="bg-primary text-white rounded-xl py-2 px-2 hover:bg-opacity-60 ">
         Logout
       </button>
 
@@ -83,7 +103,10 @@
 </template>
 
 <script setup>
+import CreateGrup from '@/components/Create/CreateGrup.vue';
+// import NavbarUtama from '@/components/Navbar/NavbarUtama.vue';
 import { useQueryClient } from '@tanstack/vue-query';
+
 import { ref, computed } from 'vue';
 import { useNotes } from '@/composables/useNotes';
 import EditIcon from '@/components/icons/EditIcon.vue';
@@ -97,9 +120,23 @@ import NotFoundIcon from '@/components/icons/NotFoundIcon.vue';
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 const queryClient = useQueryClient();
 const router = useRouter();
 const authStore = useAuthStore();
+
 const { data: notes, isLoading, error, } = useNotes();
 const { data } = useName();
 const selectedNote = ref(null);

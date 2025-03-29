@@ -26,16 +26,15 @@
 
       <div class="flex flex-grow rounded-lg  overflow-hidden">
         <div ref="lineNumbers"
-          class="w-12 p-3 text-right text-gray-500 bg-secondary font-mono select-none overflow-hidden scrollbar-hidden"
-          style="line-height: 1.5;">
+          class="line-numbers w-12 p-3 text-right text-gray-500 bg-secondary font-mono select-none overflow-hidden scrollbar-hidden">
           <div v-for="line in lineCount" :key="line" class="text-sm">{{ line }}</div>
         </div>
 
         <!-- Textarea -->
         <textarea ref="textarea" v-model="content" @input="updateLineNumbers" @scroll="syncScroll"
           placeholder="Mulai menulis catatan..."
-          class="w-full p-3 flex-grow text-gray-200 bg-secondary border-none focus:outline-none resize-none font-mono placeholder-gray-500 scrollbar-hidden"
-          style="line-height: 1.5;"></textarea>
+          class="text-sm w-full p-3 flex-grow text-gray-200  bg-secondary border-none focus:outline-none resize-none font-mono placeholder-gray-500 scrollbar-hidden"
+          style="line-height: 1.4;"></textarea>
       </div>
     </div>
   </div>
@@ -157,6 +156,11 @@ textarea::-webkit-scrollbar-thumb:hover {
 /* Hide Scrollbar */
 .scrollbar-hidden::-webkit-scrollbar {
   display: none;
+}
+
+.line-numbers div {
+  line-height: 1.4;
+  /* Coba ubah jadi 2.5 atau 3 */
 }
 
 .scrollbar-hidden {

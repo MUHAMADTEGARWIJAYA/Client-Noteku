@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import axiosInstance from '@/utils/axiosInstance' // Import axiosInstance
 
 export function useNotes() {
-  const queryClient = useQueryClient(); // Tambahkan ini
+  const queryClient = useQueryClient() // Tambahkan ini
   const { data, isLoading, error } = useQuery({
     queryKey: ['notes'],
     queryFn: async () => {
@@ -14,16 +14,13 @@ export function useNotes() {
     retry: 1,
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: true,
-
-  });
+  })
 
   const refreshNotes = async () => {
-    await queryClient.invalidateQueries(['notes']);
-  };
-  return { data, isLoading, error, refreshNotes };
+    await queryClient.invalidateQueries(['notes'])
+  }
+  return { data, isLoading, error, refreshNotes }
 }
-
-
 
 export function useName() {
   return useQuery({
@@ -51,62 +48,88 @@ export function getNoteId(id) {
 }
 
 export function useUpdateNote() {
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async ({ id, title, content }) => {
-      const response = await axiosInstance.put(`/note/update/${id}`, { title, content });
-      return response.data;
+      const response = await axiosInstance.put(`/note/update/${id}`, { title, content })
+      return response.data
     },
     onMutate: async (updatedNote) => {
-      await queryClient.cancelQueries(['notes']);
+      await queryClient.cancelQueries(['notes'])
 
-      const previousNotes = queryClient.getQueryData(['notes']);
+      const previousNotes = queryClient.getQueryData(['notes'])
 
       queryClient.setQueryData(['notes'], (oldNotes) => {
-        return oldNotes.map(note =>
-          note._id === updatedNote.id ? { ...note, title: updatedNote.title, content: updatedNote.content } : note
-        );
-      });
+        return oldNotes.map((note) =>
+          note._id === updatedNote.id
+            ? { ...note, title: updatedNote.title, content: updatedNote.content }
+            : note,
+        )
+      })
 
-      return { previousNotes };
+      return { previousNotes }
     },
     onError: (err, newNote, context) => {
       // Rollback jika gagal
-      queryClient.setQueryData(['notes'], context.previousNotes);
+      queryClient.setQueryData(['notes'], context.previousNotes)
     },
     onSettled: () => {
-      queryClient.invalidateQueries(['notes']);
-    }
-  });
+      queryClient.invalidateQueries(['notes'])
+    },
+  })
 }
 
-
 export function useCreateNote() {
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: async (newNote) => {
-      const response = await axiosInstance.post('/note/create', newNote);
-      return response.data;
+      const response = await axiosInstance.post('/note/create', newNote)
+      return response.data
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries(['notes']);
-    }
-  });
+      queryClient.invalidateQueries(['notes'])
+    },
+  })
 }
 
-
-
 export function useDeleteNote() {
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: async (id) => {
-      const response = await axiosInstance.delete(`/note/delete/${id}`);
-      return response.data;
+      const response = await axiosInstance.delete(`/note/delete/${id}`)
+      return response.data
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries(['notes']);
-    }
-  });
+      queryClient.invalidateQueries(['notes'])
+    },
+  })
+}
+
+export function useGroups() {
+  const queryClient = useQueryClient()
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['groups'],
+    queryFn: async () => {
+      const response = await axiosInstance.get('/groups/dapat')
+      console.log('Respons dari API:', response.data) // DEBUG
+      return response.data.groups
+    },
+    retry: 1,
+    staleTime: 1000 * 60 * 5,
+  })
+
+  const refreshGroups = async () => {
+    await queryClient.invalidateQueries(['groups'])
+  }
+
+  return {
+    data,
+    isLoading,
+    error,
+    refreshGroups,
+    mutate: refreshGroups, // Alias for refreshGroups if you prefer
+  }
 }
