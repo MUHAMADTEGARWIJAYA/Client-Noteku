@@ -11,7 +11,7 @@ const route = useRoute();
 const groupId = ref(route.params.id);
 const notes = ref([]);
 const selectedNote = ref(null);
-const socket = io('import.meta.env.VITE_API_BASE', {
+const socket = io(import.meta.env.VITE_API_BASE, {
   withCredentials: true,
 
   transports: ['websocket', 'polling'],
