@@ -31,7 +31,7 @@ export const useAuthStore = defineStore('auth', {
         this.user = response.data.user
         this.isAuthenticated = true
 
-        console.log('Login sukses:', response.data)
+        // console.log('Login sukses:', response.data)
       } catch (error) {
         this.error = error.response?.data?.message || 'Invalid email or password'
         this.isAuthenticated = false

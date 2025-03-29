@@ -2,7 +2,7 @@
   <div class="flex flex-row xl:w-96 min-h-screen bg-secondary">
     <!-- Hamburger Menu Button (Mobile Only) -->
     <button @click="toggleSidebar"
-      :class="['fixed top-4 left-4 z-50 p-2 bg-gray-100 rounded-lg lg:hidden transform transition-transform duration-300 ease-in-out', isSidebarOpen ? 'translate-x-96' : '-translate-x-1 lg:translate-x-0']">
+      :class="['fixed top-4 left-4 z-50 p-2 bg-gray-100 rounded-lg lg:hidden transform transition-transform duration-300 ease-in-out', isSidebarOpen ? 'translate-x-72' : '-translate-x-1 lg:translate-x-0']">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
       </svg>
@@ -25,6 +25,17 @@
             </h1>
           </div>
 
+
+
+        </div>
+
+
+      </div>
+      <div class="border border-white w-full"></div>
+
+      <div class="flex flex-col gap-2 h-72 overflow-y-auto scrollbar-hidden">
+        <div class="flex justify-between items-center">
+          <p class="text-white text-[14px] ">Mynotes : </p>
           <div>
             <router-link :to='`/home/create`'>
               <button
@@ -36,12 +47,6 @@
 
         </div>
 
-
-      </div>
-      <div class="border border-white w-full"></div>
-
-      <div class="flex flex-col gap-2 h-72 overflow-y-auto scrollbar-hidden">
-        <p class="text-white text-[14px] ">Mynotes : </p>
         <div v-if="isLoading">
           Loading....
         </div>
