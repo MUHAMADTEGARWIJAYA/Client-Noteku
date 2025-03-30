@@ -2,8 +2,11 @@
 import { useGroups } from '@/composables/useNotes';
 import axiosInstance from '@/utils/axiosInstance';
 import { ref } from 'vue';
+import { useNotifyStore } from '@/stores/Notify';
 
 // Group creation state
+
+const notifyStore = useNotifyStore();
 const newGroupName = ref('');
 const createGroupDialog = ref(false);
 const createGroupLoading = ref(false);
@@ -11,6 +14,14 @@ const createGroupError = ref('');
 
 const { data: groups, mutate: refreshGroups } = useGroups();
 
+
+const showSuccess = () => {
+  notifyStore.notify("success", "Group created successfully");
+}
+
+const showError = () => {
+  notifyStore.notify("error", "Failed to create group");
+}
 const openCreateGroupDialog = () => {
   createGroupDialog.value = true;
   newGroupName.value = '';
@@ -33,11 +44,12 @@ const createGroup = async () => {
       { name: newGroupName.value },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-
+    showSuccess()
     groups.value.push(response.data.group);
     await refreshGroups();
     createGroupDialog.value = false;
   } catch (err) {
+    showError()
     console.error('Gagal membuat grup:', err);
     createGroupError.value = err.response?.data?.message || 'Gagal membuat grup';
   } finally {

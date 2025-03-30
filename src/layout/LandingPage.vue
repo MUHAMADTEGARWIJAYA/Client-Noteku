@@ -24,6 +24,6 @@
 
 <script setup>
 import HomePage from '@/views/HomePage.vue';
-import NavbarUtama from '@/components/Navbar/NavbarUtama.vue';
+
 
 </script>

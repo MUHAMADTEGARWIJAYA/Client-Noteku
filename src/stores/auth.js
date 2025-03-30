@@ -49,7 +49,7 @@ export const useAuthStore = defineStore('auth', {
 
         const response = await axios.post(`${API}auth/refresh`, {}, { withCredentials: true })
         // Development mode
-        // const response = await axios.post(`${LOCAL}auth/refresh`, {}, { withCredentials: true });
+        // const response = await axios.post(`${LOCAL}auth/refresh`, {}, { withCredentials: true })
 
         // Simpan access token baru di localStorage
         localStorage.setItem('accessToken', response.data.accessToken)

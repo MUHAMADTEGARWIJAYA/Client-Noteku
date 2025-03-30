@@ -3,6 +3,8 @@ import { ref, onMounted, computed } from "vue";
 import { useRoute } from "vue-router";
 import { io } from "socket.io-client";
 
+import { jwtDecode } from "jwt-decode";
+
 import debounce from "lodash.debounce";
 import { useQuery } from '@tanstack/vue-query';
 import axiosInstance from "./axiosInstance";
@@ -11,17 +13,31 @@ const route = useRoute();
 const groupId = ref(route.params.id);
 const notes = ref([]);
 const selectedNote = ref(null);
-const socket = io(import.meta.env.VITE_API_BASE, {
+// const socket = io(import.meta.env.VITE_API_BASE, {
+//   withCredentials: true,
+
+//   transports: ['websocket', 'polling'],
+// });
+const socket = io("http://localhost:4000", {
   withCredentials: true,
 
   transports: ['websocket', 'polling'],
 });
-
 // Add User Dialog State
 const emailInput = ref("");
 const addUserDialog = ref(false);
 const addUserLoading = ref(false);
 const addUserError = ref("");
+
+
+const currentGroupMembers = computed(() => {
+  if (!groups.value) return [];
+  const group = groups.value.find(g => g._id === groupId.value);
+  return group ? group.members : [];
+});
+
+const isOnline = (userId) => onlineUsers.value.includes(userId);
+
 
 // Members Dialog State
 const membersDialog = ref(false);
@@ -57,21 +73,41 @@ const groupName = computed(() => {
   return currentGroup.value?.name || `Grup ${groupId.value}`;
 });
 // Computed property for current group members
-const currentGroupMembers = computed(() => {
-  if (!groups.value) return [];
-  const group = groups.value.find(g => g._id === groupId.value);
-  return group?.members || [];
-});
 
 
 const openMembersDialog = () => {
   membersDialog.value = true;
 };
 
-onMounted(() => {
-  fetchNotes();
-  socket.emit("join-group", groupId.value);
 
+
+
+
+
+const onlineUsers = ref([]);
+const userId = ref(null); // Menyimpan userId dari token
+
+// ✅ Fungsi untuk mengambil userId dari token
+const getUserIdFromToken = () => {
+  const token = localStorage.getItem("accessToken"); // Atau dari cookies
+  if (token) {
+    const decoded = jwtDecode(token);
+    return decoded.id; // Sesuaikan dengan key di token JWT
+  }
+  return null;
+};
+
+onMounted(() => {
+  userId.value = getUserIdFromToken();
+  if (userId.value) {
+    fetchNotes();
+    socket.emit("join-group", { groupId: groupId.value, userId: userId.value });
+
+    socket.on("update-online-users", (users) => {
+      console.log("👥 Daftar user online yang diterima di FE:", users);
+      onlineUsers.value = users;
+    });
+  }
   socket.on("note-updated", ({ noteId, content, userId }) => {
     console.log(`🔄 Menerima update dari server untuk Note ${noteId} oleh ${userId}`);
 
@@ -89,6 +125,10 @@ onMounted(() => {
     if (!notes.value.some(n => n._id === newNote._id)) {
       notes.value.push(newNote);
     }
+  });
+  socket.on("disconnect", (disconnectedUserId) => {
+    console.log(`🔴 User ${disconnectedUserId} disconnected`);
+    onlineUsers.value = onlineUsers.value.filter(id => id !== disconnectedUserId);
   });
 });
 
@@ -225,6 +265,7 @@ const addNoteToGroup = async () => {
     addNoteLoading.value = false;
   }
 };
+
 </script>
 
 <template>
@@ -240,6 +281,7 @@ const addNoteToGroup = async () => {
       :class="['flex bg-secondary flex-col gap-4 border-white border-r p-8 min-h-screen overflow-y-auto w-96 absolute transform transition-transform duration-300 ease-in-out', isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0']">
       <router-link to="/home" class="cursor-pointer text-start duration-200 hover:text-primary text-white"
         title="Go Back">
+
         ⋘ Back
       </router-link>
       <div class="p-4 border-b border-gray-200 flex flex-col justify-between gap-3">
@@ -417,11 +459,17 @@ const addNoteToGroup = async () => {
           <ul v-else class="divide-y divide-gray-200">
             <li v-for="member in currentGroupMembers" :key="member._id" class="py-3">
               <div class="flex items-center space-x-3">
-                <div class="flex-shrink-0">
+                <div class="relative">
                   <img class="h-10 w-10 rounded-full"
                     :src="`https://ui-avatars.com/api/?name=${member.username || 'U'}&background=random`"
                     :alt="member.username">
+
+                  <!-- Indikator Status -->
+                  <span class="absolute bottom-0 right-0 block h-3 w-3 rounded-full"
+                    :class="isOnline(member._id) ? 'bg-green-500' : 'bg-gray-400'" title="Status Online">
+                  </span>
                 </div>
+
                 <div class="flex-1 min-w-0">
                   <p class="text-sm font-medium text-gray-900 truncate">
                     {{ member.username || 'Tanpa nama' }}
@@ -429,13 +477,19 @@ const addNoteToGroup = async () => {
                   <p class="text-sm text-gray-500 truncate">
                     {{ member.email }}
                   </p>
+                  <!-- Teks Status Online/Offline -->
+                  <p class="text-xs font-semibold" :class="isOnline(member._id) ? 'text-green-500' : 'text-gray-400'">
+                    {{ isOnline(member._id) ? 'Online' : 'Offline' }}
+                  </p>
                 </div>
               </div>
             </li>
           </ul>
+
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
