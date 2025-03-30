@@ -13,16 +13,16 @@ const route = useRoute();
 const groupId = ref(route.params.id);
 const notes = ref([]);
 const selectedNote = ref(null);
-// const socket = io(import.meta.env.VITE_API_BASE, {
-//   withCredentials: true,
-
-//   transports: ['websocket', 'polling'],
-// });
-const socket = io("http://localhost:4000", {
+const socket = io(import.meta.env.VITE_API_BASE, {
   withCredentials: true,
 
   transports: ['websocket', 'polling'],
 });
+// const socket = io("http://localhost:4000", {
+//   withCredentials: true,
+
+//   transports: ['websocket', 'polling'],
+// });
 // Add User Dialog State
 const emailInput = ref("");
 const addUserDialog = ref(false);
