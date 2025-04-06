@@ -133,3 +133,60 @@ export function useGroups() {
     mutate: refreshGroups, // Alias for refreshGroups if you prefer
   }
 }
+
+// src/composables/useNotes.js
+
+export const useNotesGrup = (groupId, userId) => {
+  const fetchNotes = async () => {
+    const token = localStorage.getItem('accessToken')
+    const response = await axiosInstance.get(`/groups/group/notes/${groupId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    return response.data.notes
+  }
+
+  const notesQuery = useQuery({
+    queryKey: ['notes', groupId],
+    queryFn: fetchNotes,
+    enabled: !!userId, // hanya fetch kalau userId sudah tersedia
+  })
+
+  return notesQuery
+}
+
+export const useEditNote = (groupId, socket) => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (note) => {
+      const token = localStorage.getItem('accessToken')
+      await axiosInstance.put(
+        `/note/update/${note._id}`,
+        {
+          content: note.content,
+          title: note.title,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      )
+
+      return note
+    },
+    onSuccess: (note) => {
+      socket.emit('edit-note', {
+        groupId,
+        noteId: note._id,
+        content: note.content,
+        title: note.title,
+        userId: '12345', // bisa diubah jadi dynamic
+      })
+
+      // Refresh cache
+      queryClient.invalidateQueries({ queryKey: ['notes', groupId] })
+    },
+    onError: (err) => {
+      console.error('Gagal update note:', err)
+    },
+  })
+}
