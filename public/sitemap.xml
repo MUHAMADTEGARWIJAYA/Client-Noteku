@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Halaman utama -->
+  <url>
+    <loc>https://catatansaya.vercel.app/</loc>
+    <lastmod>2025-04-09</lastmod>
+    <priority>1.00</priority>
+  </url>
+
+  <!-- Halaman login -->
+  <url>
+    <loc>https://catatansaya.vercel.app/login</loc>
+    <lastmod>2025-04-09</lastmod>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Halaman register -->
+  <url>
+    <loc>https://catatansaya.vercel.app/register</loc>
+    <lastmod>2025-04-09</lastmod>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Catatan: Rute dinamis seperti /detail/:id atau /test/:id biasanya TIDAK disertakan -->
+</urlset>
