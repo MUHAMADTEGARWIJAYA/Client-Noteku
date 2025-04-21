@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col items-start gap-2 overflow-hidden rounded-md mt-1 ">
-    <span class="  text-sm   text-zinc-400">Please select your
+    <span class="  text-sm   text-zinc-600">Please select your
       gender</span>
     <div class="flex items-center gap-10 ml-5">
       <div class="relative flex h-[30px] w-[30px]  items-center justify-center">
@@ -40,8 +40,8 @@
       </div>
     </div>
     <div class="flex gap-9 text-center ml-3">
-      <p class="text-zinc-400  text-[10px]">Laki-laki</p>
-      <p class="text-zinc-400 text-[10px]">Perempuan</p>
+      <p class="text-zinc-600  text-[10px]">Laki-laki</p>
+      <p class="text-zinc-600 text-[10px]">Perempuan</p>
     </div>
   </div>
 

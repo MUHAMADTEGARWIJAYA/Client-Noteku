@@ -1,5 +1,5 @@
-<!-- <template>
-  <div class="bg-gradient-to-r from-rose-50 to-violet-300 flex h-screen justify-center items-center">
+<template>
+  <FormMain>
     <div class="flex flex-col justify-center p-6 sm:p-8 rounded-xl backdrop-blur-[2px] bg-white/55
     w-[90%] max-w-[500px] h-auto sm:h-[600px]
     xl:mx-auto
@@ -26,7 +26,7 @@
         <div>
           <div class="flex items-end  justify-between">
             <label for="password" class="block text-zinc-600 text-sm border-[#3F3F46] mt-10">Password</label>
-            <router-link to="/forgot-password" class="text-zinc-600 hover:text-primary mb-0.1  text-sm "> Lupa
+            <router-link to="/forgot-password" class="text-zinc-600 hover:text-violet-400 mb-0.1  text-sm "> Lupa
               Password?</router-link>
 
           </div>
@@ -49,11 +49,12 @@
       </form>
     </div>
 
+  </FormMain>
 
-  </div>
 </template>
 
 <script setup>
+import FormMain from '../Sections/Form/FormMain.vue';
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useVuelidate } from '@vuelidate/core';
@@ -112,13 +113,4 @@ const handleLogin = async () => {
     loading.value = false;
   }
 };
-</script> -->
-
-<template>
-  <FormLogin />
-
-</template>
-
-<script setup>
-import FormLogin from '@/components/Lego/Elements/FormLogin.vue';
 </script>
