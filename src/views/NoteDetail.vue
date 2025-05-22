@@ -2,7 +2,7 @@
   <div class="h-96 w-full flex flex-col text-gray-200">
     <!-- Header dengan Tombol Simpan & Hapus -->
     <div class="flex justify-between items-center p-4">
-      <h1 class="text-xl font-semibold text-gray-200">My Notes</h1>
+      <h1 class="text-xl font-semibold text-black">My Notes</h1>
       <div class="flex gap-5">
         <button @click="saveNote" :disabled="loading" :class="{ 'opacity-80 cursor-not-allowed': loading }"
           class="px-4 py-2 bg-gray-100 text-black rounded hover:bg-gray-500 transition duration-200 text-sm font-medium">
@@ -22,19 +22,19 @@
     <!-- Bagian Input Catatan -->
     <div v-if="isLoading" class="flex justify-center items-center"> Loadingg</div>
     <div v-else-if="isError"> Error</div>
-    <div v-else class="flex flex-col bg-secondary flex-grow p-6">
+    <div v-else class="flex flex-col backdrop-blur-[2px] bg-white/30 flex-grow p-6">
       <!-- Input Judul -->
       <input v-model="title" placeholder="Judul"
-        class="w-full p-3 mb-4 text-lg font-semibold text-gray-200 bg-secondary rounded-lg border-none focus:outline-none placeholder-gray-500" />
+        class="w-full p-3 mb-4 text-lg font-semibold text-black bg-transparent  rounded-lg border-none focus:outline-none placeholder-black" />
       <div class="flex flex-grow rounded-lg overflow-hidden">
         <div ref="lineNumbers"
-          class="line-numbers w-12 p-3 text-right text-gray-500 bg-secondary font-mono select-none overflow-hidden scrollbar-hidden">
+          class="line-numbers w-12 p-3 text-right text-black bg-transparent  font-mono select-none overflow-hidden scrollbar-hidden">
           <div v-for="line in lineCount" :key="line" class="text-sm">{{ line }}</div>
         </div>
         <!-- Textarea -->
         <textarea ref="textarea" v-model="content" @input="updateLineNumbers" @scroll="syncScroll"
           placeholder="Mulai menulis catatan..."
-          class="text-sm w-full p-3 flex-grow text-gray-200 bg-secondary border-none focus:outline-none resize-none font-mono placeholder-gray-500 scrollbar-hidden"
+          class="text-sm w-full p-3 flex-grow text-black bg-transparent border-none focus:outline-none resize-none font-mono placeholder-gray-500 scrollbar-hidden"
           style="line-height: 1.4;"></textarea>
       </div>
     </div>

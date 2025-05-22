@@ -64,7 +64,7 @@ const createGroup = async () => {
     <div class="group-header">
       <div class="flex items-center">
 
-        <h3 class="text-lg font-semibold text-white">Daftar Grup</h3>
+        <h3 class="text-lg font-semibold text-black">Daftar Grup</h3>
       </div>
       <button @click="openCreateGroupDialog" class="create-group-button">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -157,7 +157,7 @@ const createGroup = async () => {
 
 <style scoped>
 .group-management-container {
-  @apply bg-secondary rounded-xl p-4;
+  @apply bg-white/50 rounded-xl w-56 p-4;
 }
 
 .group-header {
@@ -181,11 +181,11 @@ const createGroup = async () => {
 }
 
 .group-link {
-  @apply flex items-center justify-between p-3 bg-secondary hover:bg-gray-700 transition-colors rounded-lg;
+  @apply flex items-center justify-between p-3 bg-gradient-to-r from-rose-50 to-violet-300 hover:bg-gray-700 transition-colors rounded-lg;
 }
 
 .group-avatar {
-  @apply flex-shrink-0 h-10 w-10 rounded-full bg-primary text-white flex items-center justify-center font-bold text-lg;
+  @apply flex-shrink-0 h-10 w-10 rounded-full bg-black text-white flex items-center justify-center font-bold text-lg;
 }
 
 .group-info {
@@ -193,7 +193,7 @@ const createGroup = async () => {
 }
 
 .group-name {
-  @apply block text-white font-medium;
+  @apply block text-black font-medium;
 }
 
 .group-meta {

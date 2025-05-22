@@ -8,9 +8,8 @@
       <p>For Everyone</p>
       <h1 class="text-4xl font-bold mt-6">Welcome to <span class="playwrite-hr-guides-regular">Webbu</span></h1>
       <p class="text-xl mt-2 max-w-xl">
-        Urus semua kegiatan kantor jadi lebih praktis hanya dengan satu aplikasi! <span
-          class="playwrite-hr-guides-regular">Webbu</span>, partner terbaik untuk kantor
-        Anda
+        Urus semua catatan jadi lebih praktis hanya dengan satu aplikasi! <span
+          class="playwrite-hr-guides-regular">Webbu</span>, partner terbaik untuk Anda
       </p>
     </div>
     <div></div>
